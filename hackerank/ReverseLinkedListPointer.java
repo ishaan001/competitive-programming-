@@ -1,8 +1,11 @@
 package hackerank;
 
+import java.io.BufferedWriter;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.Scanner;
 
-public class ReverseLinkedList {
+public class ReverseLinkedListPointer {
 
 
     static class SinglyLinkedListNode {
@@ -37,19 +40,19 @@ public class ReverseLinkedList {
         }
     }
 
-    public static void printSinglyLinkedList(SinglyLinkedListNode node, String sep) {
+    public static void printSinglyLinkedList(SinglyLinkedListNode node, String sep, BufferedWriter bufferedWriter) throws IOException {
         while (node != null) {
-            System.out.print(node.data);
+            bufferedWriter.write(String.valueOf(node.data));
 
             node = node.next;
 
             if (node != null) {
-                System.out.print(sep);
+                bufferedWriter.write(sep);
             }
         }
     }
 
-    // Complete the reversePrint function below.
+    // Complete the reverse function below.
 
     /*
      * For your reference:
@@ -60,21 +63,29 @@ public class ReverseLinkedList {
      * }
      *
      */
-    static void reversePrint(SinglyLinkedListNode head) {
-        if(head == null){
-            return;
-        }
-         SinglyLinkedListNode temp = head;
-         reversePrint(temp.next);
-        
-         System.out.println(temp.data);
+    static SinglyLinkedListNode reverse(SinglyLinkedListNode head) {
 
+            SinglyLinkedListNode prev = head;
+            SinglyLinkedListNode cur = prev.next;
+
+            while(cur != null){
+                SinglyLinkedListNode ahead = cur.next;
+                cur.next = prev;
+                prev = cur;
+                cur = ahead;
+            }
+            head.next = null;
+            head = prev;
+            return head;
+             
 
     }
 
     private static final Scanner scanner = new Scanner(System.in);
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws IOException {
+        BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter(System.getenv("OUTPUT_PATH")));
+
         int tests = scanner.nextInt();
         scanner.skip("(\r\n|[\n\r\u2028\u2029\u0085])?");
 
@@ -91,10 +102,15 @@ public class ReverseLinkedList {
                 llist.insertNode(llistItem);
             }
 
-            reversePrint(llist.head);
+            SinglyLinkedListNode llist1 = reverse(llist.head);
+
+            printSinglyLinkedList(llist1, " ", bufferedWriter);
+            bufferedWriter.newLine();
         }
 
+        bufferedWriter.close();
+
         scanner.close();
-    }
+   
 
 }

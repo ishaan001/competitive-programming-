@@ -44,7 +44,7 @@ public class WordSize {
 		
 		int totalSymbols = 4;
 		int removedSizes = 2;
-		int[] removed = {1,3};
+		int[] removed = {1,4};
 		
 		int result = formWord(totalSymbols, removedSizes, removed);
 		System.out.println(result);
